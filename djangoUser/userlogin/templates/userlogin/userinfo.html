@@ -16,18 +16,25 @@
 </head>
 <body>
     <div id='userinfo-container'>
-    <h2>User Information</h2>
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-    <p>Welcome, {{ user.username }}!</p>
-    <p>Email: {{ user.email }}</p>
-  
-    <a href="{% url 'home' %}">Home</a>
+        {% block content %}
+        <h2>User Information</h2>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <p>Welcome, {{ user.username }}!</p>
+        <img src="{{ user.userprofile.avatar }}" alt="User Avatar" style="max-width: 100px; max-height: 100px;">
+        <p>Email: {{ user.email }}</p>
+        <form method="post" action="{% url 'userinfo' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Update Profile</button>
+        </form>
+        <a href="{% url 'home' %}">Home</a>
+    {% endblock %}
     </div>
 </body>
 </html>

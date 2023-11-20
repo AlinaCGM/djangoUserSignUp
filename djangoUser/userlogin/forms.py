@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
+from .models import UserProfile
 
 class SignupForm(UserCreationForm):
     first_name = forms.CharField(max_length=100)
@@ -21,3 +22,8 @@ class SignupForm(UserCreationForm):
 class LoginForm(forms.Form):
     email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['avatar']

@@ -87,6 +87,7 @@ button {
 .messages {
     list-style: none;
     padding: 0;
+    color:blue;
 }
 
 .messages li {
@@ -94,6 +95,7 @@ button {
     padding: 10px;
     border: 1px solid #ccc;
     background-color: #f8f8f8;
+   
 }
 
 .error {
