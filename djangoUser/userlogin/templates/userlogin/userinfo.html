@@ -1,19 +1,33 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Info</title>
     <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <script>
+        // Auto-hide messages after 5 seconds
+        setTimeout(function() {
+            var messages = document.querySelectorAll('.messages li');
+            messages.forEach(function(message) {
+                message.style.display = 'none';
+            });
+        }, 5000);
+    </script>
 </head>
 <body>
     <div id='userinfo-container'>
     <h2>User Information</h2>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
     <p>Welcome, {{ user.username }}!</p>
     <p>Email: {{ user.email }}</p>
-     
+  
     <a href="{% url 'home' %}">Home</a>
-</div>
+    </div>
 </body>
 </html>

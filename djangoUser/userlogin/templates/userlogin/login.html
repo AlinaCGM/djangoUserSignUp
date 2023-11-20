@@ -4,9 +4,25 @@
 <head>
     <title>Login</title>
     <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <script>
+        // Auto-hide messages after 5 seconds
+        setTimeout(function() {
+            var messages = document.querySelectorAll('.messages li');
+            messages.forEach(function(message) {
+                message.style.display = 'none';
+            });
+        }, 5000);
+    </script>
 </head>
 <body>
     <h1>Login</h1>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
     <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
         {{ form.as_p }}

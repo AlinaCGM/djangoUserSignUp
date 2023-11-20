@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm, SignupForm
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+
 
 def home(request):
     return render(request, 'userlogin/home.html')
@@ -20,12 +22,11 @@ def login_view(request):
             password = form.cleaned_data['password']
             user = authenticate(request, username=email, password=password)
             if user is not None:
-                print("User is not None")
                 login(request, user)
-                print("Redirecting to userinfo")  
-                return redirect('userinfo') 
+                messages.success(request, 'Login successful. Welcome!')
+                return redirect('userinfo')
             else:
-                print("User is None")
+                messages.error(request, 'Invalid login credentials.')
     else:
         form = LoginForm()
     return render(request, 'userlogin/login.html', {'form': form})
@@ -35,11 +36,18 @@ def signup(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('home') 
+            user = form.save()
+            user.backend = 'django.contrib.auth.backends.ModelBackend'
+            login(request, user)
+
+            # Add success message
+            messages.success(request, 'Sign up successful. Please log in.')
+
+            return redirect('login')
     else:
         form = SignupForm()
 
     return render(request, 'userlogin/signup.html', {'form': form})
+
 
 
